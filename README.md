@@ -1,3 +1,4 @@
-# QALI: **Q**uick **Ali**asing
+# QALI
+**Q**uick **Ali**asing
 
 A work in progress
