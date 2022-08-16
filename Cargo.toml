@@ -1,6 +1,6 @@
 [package]
 name = "qali"
-version = "0.1.1"
+version = "0.1.2"
 edition = "2021"
 authiors = ["contact@jettchen.me"]
 license = "MIT"
@@ -16,6 +16,7 @@ categories = ["command-line-utilities"]
 [dependencies]
 clap = {version = "3.2.17", features=["derive"]}
 directories = "4.0"
+colored = "2"
 
 [[bin]]
 name = "q"
