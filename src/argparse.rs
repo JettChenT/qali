@@ -4,10 +4,10 @@ use clap::Parser;
 #[clap(author, version, about, long_about=None)]
 pub struct InpArg{
     /// The command to execute or set
-    #[clap(short, long, value_parser)]
+    #[clap(value_parser)]
     pub cmd: String,
 
     /// The target value
-    #[clap(short, long, value_parser)]
+    #[clap(value_parser)]
     pub target: Option<String>,
 }

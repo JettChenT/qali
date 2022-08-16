@@ -16,3 +16,7 @@ categories = ["command-line-utilities"]
 [dependencies]
 clap = {version = "3.2.17", features=["derive"]}
 directories = "4.0"
+
+[[bin]]
+name = "q"
+path = "src/main.rs"
