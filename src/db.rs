@@ -1,8 +1,7 @@
 use std::fs::File;
-use std::{fs, path};
+use std::fs;
 use std::io::{self, Write};
-use std::env;
-use std::path::{Path, PathBuf};
+use std::path::PathBuf;
 use directories::ProjectDirs;
 
 pub fn get_dir() -> io::Result<PathBuf>{
