@@ -10,4 +10,8 @@ pub struct InpArg{
     /// The target value
     #[clap(value_parser)]
     pub target: Option<String>,
+
+    /// Flag set
+    #[clap(short, long, action)]
+    pub set: bool,
 }

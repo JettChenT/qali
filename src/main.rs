@@ -1,36 +1,16 @@
-use std::io::ErrorKind;
+use std::process;
 use colored::*;
 use clap::Parser;
-use argparse::InpArg;
-use qali::{execute, db::{exists, save}};
+use qali::{run, argparse::InpArg};
 
 pub mod argparse;
 pub mod db;
 
-fn run(args:InpArg){
-    match execute(args.cmd, args.target) {
-        Ok(()) => {},
-        Err(e) => {
-            match e.kind() {
-                ErrorKind::NotFound => {
-                    println!("{}", "Command not found!".red());
-                }
-                other => {
-                    panic!("Error: {:?}", other);
-                }
-            }
-        }
-    }
-}
 
 fn main() {
     let args:InpArg = InpArg::parse();
-    if exists(&args.cmd){
-        run(args);
-    }else{
-        match args.target {
-            Some(t) => {save(&args.cmd, &t).unwrap();}
-            None => {println!("{}", "File does not exist!".red())}
-        }
-    }
+    run(args).unwrap_or_else(|err| {
+        eprintln!("Error: {}", err.to_string().red());
+        process::exit(1);
+    })   
 }

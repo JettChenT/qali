@@ -24,8 +24,7 @@ pub fn get_path(command: &String) -> PathBuf{
 
 pub fn save(command: &String, value: &String) -> io::Result<()>{
     let path = get_path(command);
-    println!("{}: {}","Saving command at".blue(), path.display());
-    let mut file = File::create(path)?;
+    let mut file = File::create(&path)?;
     file.write_all(value.as_bytes())?;
     Ok(())
 }
