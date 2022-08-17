@@ -8,6 +8,13 @@ use db::save;
 pub mod argparse;
 pub mod db;
 
+fn proc_iores<U, V: ToString>(res:Result<U, V>) -> Result<U, String>{
+    match res {
+        Ok(k) => Ok(k),
+        Err(e) => Err(e.to_string())
+    }
+}
+
 pub fn run(args:InpArg) -> Result<(), String>{
     if args.set{
         match args.target {
@@ -21,6 +28,9 @@ pub fn run(args:InpArg) -> Result<(), String>{
             }
             None => Err("Missing target value".to_string())
         }
+    }else if args.cmd=="ls"{
+        eprintln!("Listing all commands...");
+        proc_iores(db::ls())
     }else{
         match execute(args.cmd, args.target) {
             Ok(_) => Ok(()),
