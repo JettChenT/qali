@@ -1,6 +1,6 @@
 [package]
 name = "qali"
-version = "0.1.3"
+version = "0.1.4"
 edition = "2021"
 authiors = ["contact@jettchen.me"]
 license = "MIT"
