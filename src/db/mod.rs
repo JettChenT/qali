@@ -1,7 +1,8 @@
 use std::fs::File;
 use std::fs;
-use std::io::{self, Write};
+use std::io::{self, Write, ErrorKind};
 use std::path::PathBuf;
+
 use directories::ProjectDirs;
 use colored::*;
 use std::ffi::OsStr;
@@ -63,4 +64,17 @@ pub fn ls() -> io::Result<()>{
         }
     }
     Ok(())
+}
+
+pub fn remove_command(command: &String) -> Result<(), String>{
+    match fs::remove_file(get_path(command)) {
+        Ok(_) => {
+            println!("🗑 Removed command {}", command.blue());
+            Ok(())
+        },
+        Err(err) => match err.kind(){
+            ErrorKind::NotFound => Err("No such command".to_string()),
+            _ => Err(err.to_string())
+        }
+    }
 }

@@ -1,50 +1,14 @@
 use std::process::Command;
 use std::io;
-use std::io::ErrorKind;
 use colored::*;
-use argparse::InpArg;
-use db::save;
 
-pub mod argparse;
 pub mod db;
+pub mod outputils;
 
-fn proc_iores<U, V: ToString>(res:Result<U, V>) -> Result<U, String>{
+pub fn proc_iores<U, V: ToString>(res:Result<U, V>) -> Result<U, String>{
     match res {
         Ok(k) => Ok(k),
         Err(e) => Err(e.to_string())
-    }
-}
-
-pub fn run(args:InpArg) -> Result<(), String>{
-    if args.set{
-        match args.target {
-            Some(t) => {
-                match save(&args.cmd, &t){
-                    Ok(_) => Ok(()), 
-                    Err(e) => {
-                        Err(e.to_string())
-                    },
-                }
-            }
-            None => Err("Missing target value".to_string())
-        }
-    }else if args.cmd=="ls"{
-        eprintln!("Listing all commands...");
-        proc_iores(db::ls())
-    }else{
-        match execute(args.cmd, args.target) {
-            Ok(_) => Ok(()),
-            Err(e) => {
-                match e.kind() {
-                    ErrorKind::NotFound => {
-                        Err("Command file not found.".to_string())
-                    }
-                    _ => {
-                        Err(e.to_string())
-                    }
-                }
-            }
-        }
     }
 }
 

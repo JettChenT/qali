@@ -1,0 +1,23 @@
+use std::process;
+use args::Args;
+use clap::{Parser};
+use qali::{db, proc_iores};
+use qali::outputils::pnt_err;
+pub mod args;
+
+fn main(){
+    let arg = Args::parse();
+    if let Err(err) = try_main(arg){
+        pnt_err(err);
+        process::exit(1);
+    }
+}
+
+fn try_main(args: Args) -> Result<(), String>{
+    use args::Commands::*;
+    let matched = match args.command {
+        Ls => proc_iores(db::ls()),
+        Rm {command} => proc_iores(db::remove_command(&command))
+    }; 
+    matched
+}

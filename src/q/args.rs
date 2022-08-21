@@ -2,7 +2,7 @@ use clap::Parser;
 /// Qali: Quick Aliaser
 #[derive(Parser, Debug)]
 #[clap(author, version, about, long_about=None)]
-pub struct InpArg{
+pub struct Args{
     /// The command to execute or set
     #[clap(value_parser)]
     pub cmd: String,
