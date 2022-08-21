@@ -30,6 +30,12 @@ Set `p` as `python`
 ```shell
 q -s p python 
 ```
+
+Set `p` to `python` with `qali`
+```shell
+qali set p python
+```
+
 ### Execute an command via alias
 Example: execute `git status`
 ```shell
@@ -48,7 +54,6 @@ Example: remove `gs` as `git status`:
 
 `qali rm gs`
 
-Example execute ``
 ## Features to implement
 - Better output formatting
 - Subcommands
