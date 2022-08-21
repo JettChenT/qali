@@ -12,9 +12,16 @@ pub struct Args {
 pub enum Commands {
     /// List all existing commands
     Ls,
-    /// Remove a command
+    /// Remove an alias
     Rm{
         #[clap(value_parser)]
-        command: String
+        alias: String
     },
+    /// Set an alias to a command
+    Set{
+        #[clap(value_parser)]
+        alias: String,
+        #[clap(value_parser)]
+        command: String
+    }
 }

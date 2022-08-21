@@ -19,7 +19,7 @@ fn try_main(args:Args) -> Result<(), String>{
     if args.set{
         match args.target {
             Some(t) => {
-                match save(&args.cmd, &t){
+                match save(&args.alias, &t){
                     Ok(_) => Ok(()), 
                     Err(e) => {
                         Err(e.to_string())
@@ -29,7 +29,7 @@ fn try_main(args:Args) -> Result<(), String>{
             None => Err("Missing target value".to_string())
         }
     }else{
-        match execute(args.cmd, args.target) {
+        match execute(args.alias, args.target) {
             Ok(_) => Ok(()),
             Err(e) => {
                 match e.kind() {

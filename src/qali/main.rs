@@ -17,7 +17,8 @@ fn try_main(args: Args) -> Result<(), String>{
     use args::Commands::*;
     let matched = match args.command {
         Ls => proc_iores(db::ls()),
-        Rm {command} => proc_iores(db::remove_command(&command))
+        Rm {alias} => db::remove_alias(&alias),
+        Set {alias, command} => proc_iores(db::save(&alias, &command))
     }; 
     matched
 }
