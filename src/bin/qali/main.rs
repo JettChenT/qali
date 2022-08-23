@@ -15,10 +15,10 @@ fn main(){
 
 fn try_main(args: Args) -> Result<(), String>{
     use args::Commands::*;
-    let matched = match args.command {
+     
+    match args.command {
         Ls => proc_iores(db::ls()),
         Rm {alias} => db::remove_alias(&alias),
         Set {alias, command} => proc_iores(db::save(&alias, &command))
-    }; 
-    matched
+    }
 }
