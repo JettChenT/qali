@@ -21,8 +21,8 @@ glob = "0.3.0"
 
 [[bin]]
 name = "q"
-path = "src/q/main.rs"
+path = "src/bin/q/main.rs"
 
 [[bin]]
 name = "qali"
-path = "src/qali/main.rs"
+path = "src/bin/qali/main.rs"
