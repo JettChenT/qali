@@ -1,9 +1,9 @@
 use std::process;
-use std::io::ErrorKind;
 use clap::Parser;
 use args::Args;
 use qali::*;
 use db::save;
+use anyhow::{Result, anyhow};
 
 pub mod args;
 
@@ -15,32 +15,13 @@ fn main() {
     }
 }
 
-fn try_main(args:Args) -> Result<(), String>{
+fn try_main(args:Args) -> Result<()>{
     if args.set{
         match args.target {
-            Some(t) => {
-                match save(&args.alias, &t){
-                    Ok(_) => Ok(()), 
-                    Err(e) => {
-                        Err(e.to_string())
-                    },
-                }
-            }
-            None => Err("Missing target value".to_string())
+            Some(t) => save(&args.alias, &t),
+            None => Err(anyhow!("Missing target value"))
         }
     }else{
-        match execute(args.alias, args.target) {
-            Ok(_) => Ok(()),
-            Err(e) => {
-                match e.kind() {
-                    ErrorKind::NotFound => {
-                        Err("Command file not found.".to_string())
-                    }
-                    _ => {
-                        Err(e.to_string())
-                    }
-                }
-            }
-        }
+        execute(args.alias, args.target) 
     }
 }

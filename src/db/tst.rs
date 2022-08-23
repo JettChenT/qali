@@ -1,17 +1,18 @@
 #[cfg(test)]
 mod tests{
     use crate::db::*;
+    use anyhow::Result;
 
     #[test]
-    fn save_load_command() -> io::Result<()>{
+    fn save_load_command() ->Result<()>{
         let alias = "testonlyasdfasadf".to_string();
         let command = "echo 'hi'".to_string();
         if exists(&alias){
-            assert_eq!(remove_alias(&alias), Ok(()));
+            remove_alias(&alias)?;
         }
         save(&alias, &command)?;
         assert_eq!(read(&alias)?, command);
-        assert_eq!(remove_alias(&alias), Ok(()));
+        remove_alias(&alias)?;
         Ok(())
     }
 }

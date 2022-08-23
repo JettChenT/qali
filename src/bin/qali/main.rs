@@ -1,7 +1,8 @@
 use std::process;
 use args::Args;
 use clap::{Parser};
-use qali::{db, proc_iores};
+use anyhow::Result;
+use qali::db;
 use qali::outputils::pnt_err;
 pub mod args;
 
@@ -13,12 +14,12 @@ fn main(){
     }
 }
 
-fn try_main(args: Args) -> Result<(), String>{
+fn try_main(args: Args) -> Result<()>{
     use args::Commands::*;
      
     match args.command {
-        Ls => proc_iores(db::ls()),
+        Ls => db::ls(),
         Rm {alias} => db::remove_alias(&alias),
-        Set {alias, command} => proc_iores(db::save(&alias, &command))
+        Set {alias, command} => db::save(&alias, &command)
     }
 }

@@ -1,6 +1,6 @@
 use std::process::Command;
-use std::io;
 use colored::*;
+use anyhow::Result;
 
 pub mod db;
 pub mod outputils;
@@ -13,7 +13,7 @@ pub fn proc_iores<U, V: ToString>(res:Result<U, V>) -> Result<U, String>{
 }
 
 
-pub fn execute(qali_cmd: String, target: Option<String>) -> io::Result<()>{
+pub fn execute(qali_cmd: String, target: Option<String>) -> Result<()>{
     let pref_str = db::read(&qali_cmd)?;
     let mut prefs = pref_str.split_whitespace();
     let mut shell_cmd = Command::new(prefs.next().unwrap());
@@ -21,7 +21,7 @@ pub fn execute(qali_cmd: String, target: Option<String>) -> io::Result<()>{
         shell_cmd.arg(arg);
     }
     let targetval = target.unwrap_or_default();
-    if targetval != ""{
+    if !targetval.is_empty(){
         shell_cmd.arg(&targetval);
     }
     eprintln!("Executing command:");

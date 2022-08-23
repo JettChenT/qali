@@ -1,15 +1,17 @@
 use std::fs::File;
 use std::fs;
-use std::io::{self, Write, ErrorKind};
+use std::io;
+use std::io::Write;
 use std::path::PathBuf;
+use std::ffi::OsStr;
 
 use directories::ProjectDirs;
 use colored::*;
-use std::ffi::OsStr;
+use anyhow::{Result, Context};
 
 mod tst;
 
-pub fn get_dir() -> io::Result<PathBuf>{
+pub fn get_dir() -> Result<PathBuf>{
     let cur_dir = ProjectDirs::from("", "", "qali").unwrap();
     let d_dir = cur_dir.data_dir();
     fs::create_dir_all(d_dir)?;
@@ -26,7 +28,7 @@ pub fn get_path(alias: &String) -> PathBuf{
     p.join(filename)
 }
 
-pub fn save(alias: &String, command: &String) -> io::Result<()>{
+pub fn save(alias: &String, command: &String) -> Result<()>{
     if exists(alias) {
         println!("Command named {} already exists!", alias.blue());
         print!("Do you want to override existing command? y/n: ");
@@ -45,11 +47,12 @@ pub fn save(alias: &String, command: &String) -> io::Result<()>{
     Ok(())
 }
 
-pub fn read(alias: &String) -> io::Result<String>{
-    fs::read_to_string(get_path(alias))
+pub fn read(alias: &String) -> Result<String>{
+    fs::read_to_string(get_path(alias)).
+        with_context(|| format!("Alias {} not found", alias))
 }
 
-pub fn ls() -> io::Result<()>{
+pub fn ls() -> Result<()>{
     let dir = get_dir().unwrap();
     let paths = fs::read_dir(dir)?;
 
@@ -66,15 +69,13 @@ pub fn ls() -> io::Result<()>{
     Ok(())
 }
 
-pub fn remove_alias(alias: &String) -> Result<(), String>{
+pub fn remove_alias(alias: &String) -> Result<()>{
     match fs::remove_file(get_path(alias)) {
         Ok(_) => {
             println!("🗑 Removed command {}", alias.blue());
             Ok(())
         },
-        Err(err) => match err.kind(){
-            ErrorKind::NotFound => Err("No such command".to_string()),
-            _ => Err(err.to_string())
-        }
+        Err(err) => Err(err).with_context(|| format!("Failed to remove {}", alias))
     }
-}
+} 
+ 
