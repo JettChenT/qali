@@ -1,17 +1,10 @@
 use std::process::Command;
 use colored::*;
-use anyhow::Result;
+use anyhow::{Result, Context};
 
 pub mod db;
 pub mod outputils;
-
-pub fn proc_iores<U, V: ToString>(res:Result<U, V>) -> Result<U, String>{
-    match res {
-        Ok(k) => Ok(k),
-        Err(e) => Err(e.to_string())
-    }
-}
-
+pub mod commands;
 
 pub fn execute(qali_cmd: String, target: Option<String>) -> Result<()>{
     let pref_str = db::read(&qali_cmd)?;
@@ -24,9 +17,8 @@ pub fn execute(qali_cmd: String, target: Option<String>) -> Result<()>{
     if !targetval.is_empty(){
         shell_cmd.arg(&targetval);
     }
-    eprintln!("Executing command:");
     eprintln!("{} {}", pref_str.blue(), &targetval);
     eprintln!("{}", "-".repeat(10).blue());
-    shell_cmd.status().expect("Failed to execute process.");
+    shell_cmd.status().context("Failed to execute process.")?;
     Ok(())
 }

@@ -24,7 +24,7 @@ pub fn exists(alias: &String) -> bool{
 
 pub fn get_path(alias: &String) -> PathBuf{
     let p = get_dir().unwrap();
-    let filename =format!("{}.qali", alias);
+    let filename =format!("{}.toml", alias);
     p.join(filename)
 }
 
@@ -58,7 +58,7 @@ pub fn ls() -> Result<()>{
 
     for p in paths.flatten() {
         let p_path = p.path();
-        if p_path.extension() == Some(OsStr::new("qali")){
+        if p_path.extension() == Some(OsStr::new("toml")){
             if let Some(stem) = p_path.file_stem(){
                 let alias = stem.to_string_lossy();
                 let cmd = read(&alias.to_string()).unwrap_or_else(|_| "no content".to_string());
