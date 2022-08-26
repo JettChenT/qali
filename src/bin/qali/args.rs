@@ -6,6 +6,9 @@ use clap::{Parser, Subcommand};
 pub struct Args {
     #[clap(subcommand)]
     pub command: Commands,
+
+    #[clap(short, long, action)]
+    pub debug: bool,
 }
 
 #[derive(Subcommand, Debug)]

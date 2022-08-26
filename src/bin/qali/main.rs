@@ -8,18 +8,18 @@ pub mod args;
 
 fn main(){
     let arg = Args::parse();
-    if let Err(err) = try_main(arg){
-        pnt_err(err);
+    if let Err(err) = try_main(&arg){
+        pnt_err(err, arg.debug);
         process::exit(1);
     }
 }
 
-fn try_main(args: Args) -> Result<()>{
+fn try_main(args: &Args) -> Result<()>{
     use args::Commands::*;
      
-    match args.command {
+    match &args.command {
         Ls => db::ls(),
-        Rm {alias} => db::remove_alias(&alias),
-        Set {alias, command} => db::save(&alias, &command)
+        Rm {alias} => db::remove_alias(alias),
+        Set {alias, command} => db::save(alias, command)
     }
 }

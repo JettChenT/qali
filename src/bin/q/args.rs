@@ -14,4 +14,8 @@ pub struct Args{
     /// Flag set
     #[clap(short, long, action)]
     pub set: bool,
+
+    /// Flag debug
+    #[clap(short, long, action)]
+    pub debug: bool,
 }
