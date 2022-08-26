@@ -34,4 +34,8 @@ impl QaliCommand for Uri{
             application: None,
         })
     }
+
+    fn export(&self) -> anyhow::Result<String> {
+        Ok(self.uri.clone())
+    }
 }

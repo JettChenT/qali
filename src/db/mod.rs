@@ -11,6 +11,8 @@ use anyhow::{Result, Context};
 
 mod tst;
 
+const FLIE_EXTENSION: &str = "qali";
+
 pub fn get_dir() -> Result<PathBuf>{
     let cur_dir = ProjectDirs::from("", "", "qali").unwrap();
     let d_dir = cur_dir.data_dir();
@@ -24,13 +26,13 @@ pub fn exists(alias: &String) -> bool{
 
 pub fn get_path(alias: &String) -> PathBuf{
     let p = get_dir().unwrap();
-    let filename =format!("{}.toml", alias);
+    let filename =format!("{}.{}", alias, FLIE_EXTENSION);
     p.join(filename)
 }
 
 pub fn save(alias: &String, command: &String) -> Result<()>{
     if exists(alias) {
-        println!("Command named {} already exists!", alias.blue());
+        println!("Alias named {} already exists!", alias.blue());
         print!("Do you want to override existing command? y/n: ");
         io::stdout().flush()?;
         let mut confirm = String::new();
@@ -53,12 +55,15 @@ pub fn read(alias: &String) -> Result<String>{
 }
 
 pub fn ls() -> Result<()>{
-    let dir = get_dir().unwrap();
+    let dir = get_dir()?;
+    println!("Directory: {}", &dir.to_string_lossy());
+
     let paths = fs::read_dir(dir)?;
+
 
     for p in paths.flatten() {
         let p_path = p.path();
-        if p_path.extension() == Some(OsStr::new("toml")){
+        if p_path.extension() == Some(OsStr::new(FLIE_EXTENSION)){
             if let Some(stem) = p_path.file_stem(){
                 let alias = stem.to_string_lossy();
                 let cmd = read(&alias.to_string()).unwrap_or_else(|_| "no content".to_string());

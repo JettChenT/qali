@@ -3,6 +3,7 @@ use anyhow::{Result, Context, anyhow};
 use std::path::PathBuf;
 use std::process::Command;
 use std::str::FromStr;
+use std::fs;
 use regex::Regex;
 
 #[derive(Debug)]
@@ -43,6 +44,12 @@ impl QaliCommand for Python{
             env: "python".to_string(),
             filename: command.to_string(),
         })
+    }
+
+    fn export(&self) -> Result<String> {
+        let file = PathBuf::from_str(&self.filename)?;
+        let fp = fs::canonicalize(file)?;
+        Ok(fp.to_string_lossy().to_string())
     }
 }
 

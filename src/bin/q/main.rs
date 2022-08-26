@@ -1,9 +1,9 @@
 use std::process;
 use clap::Parser;
 use args::Args;
-use qali::*;
+use qali::{*, db::exists};
 use qali::commands::execute_alias;
-use db::save;
+use qali::commands;
 use anyhow::{Result, anyhow};
 
 pub mod args;
@@ -19,10 +19,16 @@ fn main() {
 fn try_main(args:&Args) -> Result<()>{
     if args.set{
         match &args.target {
-            Some(t) => save(&args.alias, t),
+            Some(t) => commands::save_alias(&args.alias, t),
             None => Err(anyhow!("Missing target value"))
         }
     }else{
+        if let Some(t) = &args.target{
+            if !exists(&args.alias){
+                eprintln!("Alias {} does not exist, creating one...", args.alias);
+                return commands::save_alias(&args.alias, t);
+            }
+        }
         execute_alias(&args.alias, args.target.as_ref())
     }
 }

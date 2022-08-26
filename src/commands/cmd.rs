@@ -32,6 +32,10 @@ impl QaliCommand for Cmd {
             command: command.to_string(),
         })
     }
+
+    fn export(&self) -> anyhow::Result<String> {
+        Ok(self.command.clone())
+    }
 }
 
 #[cfg(test)]

@@ -1,6 +1,6 @@
 use super::QaliCommand;
 use anyhow::{Context, anyhow, Result};
-use std::{path::PathBuf, str::FromStr, process::Command};
+use std::{fs, path::PathBuf, str::FromStr, process::Command};
 use regex::Regex;
 
 #[derive(Debug)]
@@ -37,6 +37,12 @@ impl QaliCommand for Shell {
         Ok(Shell{
             filename: command.to_string(),
         })
+    }
+
+    fn export(&self) -> Result<String> {
+        let file = PathBuf::from_str(&self.filename)?;
+        let fp = fs::canonicalize(file)?;
+        Ok(fp.to_string_lossy().to_string())
     }
 }
 

@@ -4,6 +4,7 @@ use clap::{Parser};
 use anyhow::Result;
 use qali::db;
 use qali::outputils::pnt_err;
+use qali::commands;
 pub mod args;
 
 fn main(){
@@ -20,6 +21,6 @@ fn try_main(args: &Args) -> Result<()>{
     match &args.command {
         Ls => db::ls(),
         Rm {alias} => db::remove_alias(alias),
-        Set {alias, command} => db::save(alias, command)
+        Set {alias, command} => commands::save_alias(alias, command)
     }
 }
