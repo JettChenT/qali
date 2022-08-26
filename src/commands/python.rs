@@ -31,7 +31,7 @@ impl QaliCommand for Python{
     }
 
     fn is_valid(command: &String) -> bool {
-        let re = Regex::new(r"^.*.py$").unwrap();
+        let re = Regex::new(r"^.*\.py$").unwrap();
         re.is_match(command)
     }
 

@@ -25,7 +25,7 @@ impl QaliCommand for Shell {
     }
 
     fn is_valid(command: &String) -> bool {
-        let re = Regex::new(r"^.*.sh$").unwrap();
+        let re = Regex::new(r"^.*\.sh$").unwrap();
         re.is_match(command)
     }
 

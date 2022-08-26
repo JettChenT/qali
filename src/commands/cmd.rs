@@ -1,5 +1,6 @@
 use super::QaliCommand;
 use anyhow::Context;
+use colored::Colorize;
 use std::process::Command;
 
 #[derive(Debug)]
@@ -9,7 +10,7 @@ pub struct Cmd {
 
 impl QaliCommand for Cmd {
     fn execute(&self, args: Option<&String>) -> anyhow::Result<()> {
-        println!("Executing command");
+        println!("$ {} {}", &self.command.blue(), args.unwrap_or(&"".to_string()));
         let mut prefs = self.command.split_whitespace();
         let cmd = prefs.next().context("failed to get command")?;
         let mut shell_cmd = Command::new(cmd);
