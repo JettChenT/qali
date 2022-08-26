@@ -3,7 +3,18 @@
 
 Note: we're currently in the stage of initial development.
 
+[![asciicast](https://asciinema.org/a/517311.svg)](https://asciinema.org/a/517311)
+
+## Purpose
+QALI can...
+- Shorten long & complex commands
+- Act as a namespace for your custom scripts (stop worrying about conflicting names with system commands!)
+- Make you type less
+- Reduce your mental workload
+
 ## Installation
+Currently, a [Rust](https://www.rust-lang.org) installation is required 
+
 ```shell
 cargo install qali
 ```
@@ -18,22 +29,29 @@ The command `qali` is meant as a companion allowing for subcommands and more fun
 `q --help`
 
 `qali --help`
+
+## Supported alias types:
+- Command: one liners, eg. `qali set hi "echo hi"`
+- Shell: Shell scripts, eg. `qali set hi hello.sh` (*EXPERIMENTAL*)
+- Python: Python scripts, eg. `qali set hi hello.py` (*EXPERIMENTAL*)
+- URI: open URI in default application, eg. `qali set hi https://beta.sayhello.so` (*EXPERIMENTAL*)
+
 ## Examples:
 
 ### Set an alias
-Example: set `gs` as `git status`
+Example: set `gs` as `git status` 
 ```shell
 q -s gs "git status"
 ```
 
-Set `p` as `python`
+Set `p` as `python` if `p` doesn't exist
 ```shell
-q -s p python 
+q p python 
 ```
 
-Set `p` to `python` with `qali`
+Set `hi` to `./hi.py` with `qali`
 ```shell
-qali set p python
+qali set hi ./hi.py
 ```
 
 ### Execute an command via alias

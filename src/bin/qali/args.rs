@@ -7,6 +7,7 @@ pub struct Args {
     #[clap(subcommand)]
     pub command: Commands,
 
+    /// Debug mode
     #[clap(short, long, action)]
     pub debug: bool,
 }
@@ -17,6 +18,7 @@ pub enum Commands {
     Ls,
     /// Remove an alias
     Rm{
+        /// The alias
         #[clap(value_parser)]
         alias: String
     },
