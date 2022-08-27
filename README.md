@@ -1,6 +1,9 @@
 # QALI (q)
 **Q**uick **Ali**asing
 
+![Crates.io](https://img.shields.io/crates/l/qali) 
+![Crates.io](https://img.shields.io/crates/v/qali)
+
 Note: we're currently in the stage of initial development.
 
 [![asciicast](https://asciinema.org/a/517408.svg)](https://asciinema.org/a/517408)
