@@ -2,6 +2,7 @@ use super::QaliCommand;
 use anyhow::{Context, anyhow, Result};
 use std::{fs, path::PathBuf, str::FromStr, process::Command};
 use regex::Regex;
+use colored::Colorize;
 
 #[derive(Debug)]
 pub struct Shell{
@@ -10,7 +11,7 @@ pub struct Shell{
 
 impl QaliCommand for Shell {
     fn execute(&self, args: Option<&String>) -> Result<()> {
-        eprintln!("Running Shell script");
+        eprintln!("{}","Running Shell script".dimmed());
         let file = PathBuf::from_str(&self.filename)?;
         if !file.exists() {
             return Err(anyhow!("File {} not found", self.filename));

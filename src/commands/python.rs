@@ -1,5 +1,6 @@
 use super::QaliCommand;
 use anyhow::{Result, Context, anyhow};
+use colored::Colorize;
 use std::path::PathBuf;
 use std::process::Command;
 use std::str::FromStr;
@@ -16,7 +17,7 @@ pub struct Python{
 
 impl QaliCommand for Python{
     fn execute(&self, args: Option<&String>) -> Result<()>{
-        eprintln!("Running Python script");
+        eprintln!("{}","Running Python script".dimmed());
         let file = PathBuf::from_str(&self.filename)?;
         if !file.exists(){
             return Err(anyhow!("File {} not found", self.filename));
