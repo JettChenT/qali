@@ -3,7 +3,7 @@
 
 Note: we're currently in the stage of initial development.
 
-[![asciicast](https://asciinema.org/a/517311.svg)](https://asciinema.org/a/517311)
+[![asciicast](https://asciinema.org/a/517408.svg)](https://asciinema.org/a/517408)
 
 ## Purpose
 QALI can...
