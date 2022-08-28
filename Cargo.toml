@@ -1,6 +1,6 @@
 [package]
 name = "qali"
-version = "0.2.5"
+version = "0.3.0"
 edition = "2021"
 authors = ["contact@jettchen.me"]
 license = "MIT/Apache-2.0"
@@ -17,11 +17,11 @@ categories = ["command-line-utilities"]
 clap = {version = "3.2.17", features=["derive"]}
 directories = "4.0"
 colored = "2"
-glob = "0.3.0"
 anyhow="1.0"
-serde_json = "1.0"
 open = "1"
 regex = "1.6.0"
+dialoguer = {version = "0.10.2", features=["fuzzy-select"]}
+tabled = {version = "0.8.0", features=["color"]}
 
 [[bin]]
 name = "q"

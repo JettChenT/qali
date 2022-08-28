@@ -1,4 +1,6 @@
 use anyhow::Result;
+use dialoguer::{theme::ColorfulTheme, Input};
+
 use python::Python;
 use cmd::Cmd;
 use shell::Shell;
@@ -42,4 +44,20 @@ pub fn execute_alias(alias: &String, args: Option<&String>) -> Result<()> {
     let command = db::read(alias)?;
     let cmd = parse_command(&command)?;
     cmd.execute(args)
+}
+
+pub fn select_and_execute_alias() -> Result<()> {
+    let alias = db::interface::select()?;
+    let args = {
+        let inp: String = Input::with_theme(&ColorfulTheme::default())
+            .with_prompt("Enter arguments(if any)")
+            .allow_empty(true)
+            .interact_text()?;
+        if inp.is_empty() {
+            None
+        } else {
+            Some(inp)
+        }
+    };
+    execute_alias(&alias, args.as_ref())
 }

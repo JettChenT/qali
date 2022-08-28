@@ -28,5 +28,7 @@ pub enum Commands {
         alias: String,
         #[clap(value_parser)]
         command: String
-    }
+    },
+    /// Select and execute an alias
+    Select
 }

@@ -58,6 +58,11 @@ qali set hi ./hi.py
 ```
 
 ### Execute an command via alias
+Execute aliases interactively
+Method 1:`q`
+
+Method 2:`qali select`
+
 Example: execute `git status`
 ```shell
 q gs
