@@ -19,8 +19,8 @@ fn try_main(args: &Args) -> Result<()>{
     use args::Commands::*;
      
     match &args.command {
-        Ls => db::interface::ls(),
-        Rm {alias} => db::remove_alias(alias),
+        List => db::interface::ls(),
+        Remove {alias} => db::remove_alias(alias),
         Set {alias, command} => commands::save_alias(alias, command),
         Select => commands::select_and_execute_alias()
     }

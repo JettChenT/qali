@@ -1,5 +1,5 @@
 use std::vec;
-use tabled::{Table, Style, Tabled, Modify, object::{Columns, Column}, Format};
+use tabled::{Table, Style, Tabled, Modify, object::Columns, Format};
 use colored::Colorize;
 use dialoguer::{
     FuzzySelect,

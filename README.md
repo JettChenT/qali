@@ -34,10 +34,10 @@ The command `qali` is meant as a companion allowing for subcommands and more fun
 `qali --help`
 
 ## Supported alias types:
-- Command: one liners, eg. `qali set hi "echo hi"`
-- Shell: Shell scripts, eg. `qali set hi hello.sh` (*EXPERIMENTAL*)
-- Python: Python scripts, eg. `qali set hi hello.py` (*EXPERIMENTAL*)
-- URI: open URI in default application, eg. `qali set hi https://beta.sayhello.so` (*EXPERIMENTAL*)
+- Command: one liners, eg. `q -s hi "echo hi"`
+- Shell: Shell scripts, eg. `q -s hi hello.sh` (*EXPERIMENTAL*)
+- Python: Python scripts, eg. `q -s hi hello.py` (*EXPERIMENTAL*)
+- URI: open URI in default application, eg. `q -s hi https://beta.sayhello.so` (*EXPERIMENTAL*)
 
 ## Examples:
 
@@ -73,12 +73,12 @@ q -- p --version
 ```
 
 ### List all existing commands
-`qali ls`
+`qali list`
 
 ### Remove a command
 Example: remove `gs` as `git status`:
 
-`qali rm gs`
+`qali remove gs`
 
 ## Features to implement
 - Better output formatting

@@ -15,9 +15,9 @@ pub struct Args {
 #[derive(Subcommand, Debug)]
 pub enum Commands {
     /// List all existing commands
-    Ls,
+    List,
     /// Remove an alias
-    Rm{
+    Remove{
         /// The alias
         #[clap(value_parser)]
         alias: String
