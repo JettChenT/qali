@@ -6,7 +6,7 @@
 
 Note: we're currently in the stage of initial development.
 
-[![asciicast](https://asciinema.org/a/517408.svg)](https://asciinema.org/a/517408)
+[![asciicast](https://asciinema.org/a/517546.svg)](https://asciinema.org/a/517546)
 
 ## Purpose
 QALI can...
@@ -57,12 +57,12 @@ Set `hi` to `./hi.py` with `qali`
 qali set hi ./hi.py
 ```
 
-### Execute an command via alias
-Execute aliases interactively
-Method 1:`q`
+### Execute aliases interactively (fuzzy select)
+Method 1: `q`
 
-Method 2:`qali select`
+Method 2: `qali select`
 
+### Execute aliases directly
 Example: execute `git status`
 ```shell
 q gs
@@ -75,10 +75,13 @@ q -- p --version
 ### List all existing commands
 `qali list`
 
+Alternatively, you can set `q -s ls "qali list"` to shorten this.
 ### Remove a command
 Example: remove `gs` as `git status`:
 
 `qali remove gs`
+
+Alternatively, you can set `q -s rm "qali remove"` to shorten this.
 
 ## Features to implement
 - Better output formatting
