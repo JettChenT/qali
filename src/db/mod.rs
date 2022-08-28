@@ -7,7 +7,7 @@ use std::ffi::OsStr;
 use directories::ProjectDirs;
 use colored::*;
 use anyhow::{Result, Context};
-use dialoguer::Confirm;
+use dialoguer::{Confirm, theme::ColorfulTheme};
 
 mod tst;
 pub mod interface;
@@ -34,7 +34,7 @@ pub fn get_path(alias: &String) -> PathBuf{
 pub fn save(alias: &String, command: &String) -> Result<()>{
     if exists(alias) {
         println!("Alias named {} already exists!", alias.blue());
-        if !Confirm::new().with_prompt("Do you want to overwrite it?").interact()? {
+        if !Confirm::with_theme(&ColorfulTheme::default()).with_prompt("Do you want to overwrite it?").interact()? {
             return Ok(());
         }
     }
