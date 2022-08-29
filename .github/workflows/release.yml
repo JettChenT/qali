@@ -88,10 +88,11 @@ jobs:
       run: cargo build --target ${{ matrix.target }} --verbose --release
     - name: Build archive
       shell: bash
+      if: ${{ success() }}
       run: |
-        outdir="./target/${{ env.TARGET_DIR }}/release"
+        outdir="./target/release"
         staging="qali-${{ needs.create-release.outputs.release_version }}-${{ matrix.target }}"
-        cp {README.md,LICENSE-*} "$staging/"
+        ls "target/${{ matrix.target }}/release"
         if [ "${{ matrix.os }}" = "windows-2019" ]; then
           cp "target/${{ matrix.target }}/release/qali.exe" "$staging/"
           cp "target/${{ matrix.target }}/release/q.exe" "$staging/"
@@ -106,6 +107,7 @@ jobs:
         fi
     - name: Upload release archive
       uses: actions/upload-release-asset@v1.0.2
+      if: ${{ success() }}
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
