@@ -91,7 +91,7 @@ jobs:
       if: ${{ success() }}
       run: |
         outdir="./target/release"
-        staging="qali-${{ needs.create-release.outputs.release_version }}-${{ matrix.target }}"
+        staging="qali-${{ matrix.target }}"
         mkdir "$staging"
         ls "target/${{ matrix.target }}/release"
         if [ "${{ matrix.os }}" = "windows-2019" ]; then
