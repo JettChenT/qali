@@ -92,6 +92,7 @@ jobs:
       run: |
         outdir="./target/release"
         staging="qali-${{ needs.create-release.outputs.release_version }}-${{ matrix.target }}"
+        mkdir "$staging"
         ls "target/${{ matrix.target }}/release"
         if [ "${{ matrix.os }}" = "windows-2019" ]; then
           cp "target/${{ matrix.target }}/release/qali.exe" "$staging/"
