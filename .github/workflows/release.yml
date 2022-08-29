@@ -1,4 +1,3 @@
-# This workflow is based on https://github.com/BurntSushi/ripgrep/blob/master/.github/workflows/release.yml
 # The way this works is the following:
 #
 # The create-release job runs purely to initialize the GitHub release itself
@@ -14,138 +13,105 @@
 # Reference:
 # https://eugene-babichenko.github.io/blog/2020/05/09/github-actions-cross-platform-auto-releases/
 
-name: release
+name: post-release
 on:
   push:
-    # Enable when testing release infrastructure on a branch.
-    # branches:
-    # - ag/work
     tags:
-    - "[0-9]+.[0-9]+.[0-9]+"
+    - "v*"
+env:
+  BIN_NAME: q
 jobs:
   create-release:
     name: create-release
     runs-on: ubuntu-latest
     outputs:
       upload_url: ${{ steps.release.outputs.upload_url }}
+      release_version: ${{ env.RELEASE_VERSION }}
     steps:
-      - name: Get the release version from the tag
-        shell: bash
-        if: env.Q_VERSION == ''
-        run: |
-          # Apparently, this is the right way to get a tag name. Really?
-          #
-          # See: https://github.community/t5/GitHub-Actions/How-to-get-just-the-tag-name/m-p/32167/highlight/true#M1027
-          echo "Q_VERSION=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
-          echo "version is: ${{ env.Q_VERSION }}"
-      - name: Create GitHub release
-        id: release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: ${{ env.Q_VERSION }}
-          release_name: ${{ env.Q_VERSION }}
-
+    - name: Get the release version from the tag
+      shell: bash
+      if: env.RELEASE_VERSION == ''
+      run: |
+        # See: https://github.community/t5/GitHub-Actions/How-to-get-just-the-tag-name/m-p/32167/highlight/true#M1027
+        echo "RELEASE_VERSION=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
+        echo "version is: ${{ env.RELEASE_VERSION }}"
+    - name: Checkout repository
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: 1
+    # - name: Generate Release Notes
+    #   run: |
+    #     ./.github/workflows/release-notes.py --tag ${{ env.RELEASE_VERSION }} --output notes-${{ env.RELEASE_VERSION }}.md
+    #     cat notes-${{ env.RELEASE_VERSION }}.md
+    - name: Create GitHub release
+      id: release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ env.RELEASE_VERSION }}
+        release_name: ${{ env.RELEASE_VERSION }}
+        # body_path: notes-${{ env.RELEASE_VERSION }}.md
   build-release:
     name: build-release
-    needs: ['create-release']
-    runs-on: ${{ matrix.os }}
-    env:
-      # For some builds, we use cross to test on 32-bit and big-endian
-      # systems.
-      CARGO: cargo
-      # When CARGO is set to CROSS, this is set to `--target matrix.target`.
-      TARGET_FLAGS: ""
-      # When CARGO is set to CROSS, TARGET_DIR includes matrix.target.
-      TARGET_DIR: ./target
-      # Emit backtraces on panics.
-      RUST_BACKTRACE: 1
-      # Build static releases with PCRE2.
-      PCRE2_SYS_STATIC: 1
+    needs: create-release
     strategy:
+      fail-fast: false
       matrix:
-        build: [linux, linux-arm, macos, win-msvc, win-gnu, win32-msvc]
+        build: [linux, macos, win-msvc]
         include:
         - build: linux
           os: ubuntu-18.04
-          rust: nightly
+          rust: stable
           target: x86_64-unknown-linux-musl
-        - build: linux-arm
-          os: ubuntu-18.04
-          rust: nightly
-          target: arm-unknown-linux-gnueabihf
         - build: macos
           os: macos-latest
-          rust: nightly
+          rust: stable
           target: x86_64-apple-darwin
         - build: win-msvc
           os: windows-2019
-          rust: nightly
+          rust: stable
           target: x86_64-pc-windows-msvc
-        - build: win-gnu
-          os: windows-2019
-          rust: nightly-x86_64-gnu
-          target: x86_64-pc-windows-gnu
-        - build: win32-msvc
-          os: windows-2019
-          rust: nightly
-          target: i686-pc-windows-msvc
-
+    runs-on: ${{ matrix.os }}
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
       with:
         fetch-depth: 1
-
     - name: Install packages (Ubuntu)
       if: matrix.os == 'ubuntu-18.04'
       run: |
-        ci/ubuntu-install-packages
-
-    - name: Install packages (macOS)
-      if: matrix.os == 'macos-latest'
-      run: |
-        ci/macos-install-packages
-
+        sudo apt-get update
+        sudo apt-get install -y --no-install-recommends xz-utils liblz4-tool musl-tools
     - name: Install Rust
-      uses: dtolnay/rust-toolchain@v1
+      uses: actions-rs/toolchain@v1
       with:
         toolchain: ${{ matrix.rust }}
+        profile: minimal
+        override: true
         target: ${{ matrix.target }}
-
-    - name: Use Cross
+    - name: Build release binary
+      run: cargo build --target ${{ matrix.target }} --verbose --release
+    - name: Build archive
       shell: bash
       run: |
-        cargo install cross
-        echo "CARGO=cross" >> $GITHUB_ENV
-        echo "TARGET_FLAGS=--target ${{ matrix.target }}" >> $GITHUB_ENV
-        echo "TARGET_DIR=./target/${{ matrix.target }}" >> $GITHUB_ENV
-
-    - name: Show command used for Cargo
-      run: |
-        echo "cargo command is: ${{ env.CARGO }}"
-        echo "target flag is: ${{ env.TARGET_FLAGS }}"
-        echo "target dir is: ${{ env.TARGET_DIR }}"
-
-    - name: Build release binary
-      run: ${{ env.CARGO }} build --verbose --release --features pcre2 ${{ env.TARGET_FLAGS }}
-
-    - name: Strip release binary (linux and macos)
-      if: matrix.build == 'linux' || matrix.build == 'macos'
-      run: strip "target/${{ matrix.target }}/release/qali"
-
-    - name: Strip release binary (arm)
-      if: matrix.build == 'linux-arm'
-      run: |
-        docker run --rm -v \
-          "$PWD/target:/target:Z" \
-          rustembedded/cross:arm-unknown-linux-gnueabihf \
-          arm-linux-gnueabihf-strip \
-          /target/arm-unknown-linux-gnueabihf/release/qali
-
+        outdir="./target/${{ env.TARGET_DIR }}/release"
+        staging="${{ env.BIN_NAME }}-${{ needs.create-release.outputs.release_version }}-${{ matrix.target }}"
+        mkdir -p "$staging"/{complete,doc}
+        cp {README.md,LICENSE-*} "$staging/"
+        cp {CHANGELOG.md,docs/*} "$staging/doc/"
+        if [ "${{ matrix.os }}" = "windows-2019" ]; then
+          cp "target/${{ matrix.target }}/release/${{ env.BIN_NAME }}.exe" "$staging/"
+          cd "$staging"
+          7z a "../$staging.zip" .
+          echo "ASSET=$staging.zip" >> $GITHUB_ENV
+        else
+          cp "target/${{ matrix.target }}/release/${{ env.BIN_NAME }}" "$staging/"
+          tar czf "$staging.tar.gz" -C "$staging" .
+          echo "ASSET=$staging.tar.gz" >> $GITHUB_ENV
+        fi
     - name: Upload release archive
-      uses: actions/upload-release-asset@v1.0.1
+      uses: actions/upload-release-asset@v1.0.2
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
