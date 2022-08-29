@@ -18,8 +18,6 @@ on:
   push:
     tags:
     - "v*"
-env:
-  BIN_NAME: qali
 jobs:
   create-release:
     name: create-release
@@ -92,7 +90,7 @@ jobs:
       shell: bash
       run: |
         outdir="./target/${{ env.TARGET_DIR }}/release"
-        staging="$qali-${{ needs.create-release.outputs.release_version }}-${{ matrix.target }}"
+        staging="qali-${{ needs.create-release.outputs.release_version }}-${{ matrix.target }}"
         cp {README.md,LICENSE-*} "$staging/"
         if [ "${{ matrix.os }}" = "windows-2019" ]; then
           cp "target/${{ matrix.target }}/release/qali.exe" "$staging/"
