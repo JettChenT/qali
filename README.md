@@ -15,22 +15,35 @@ QALI can...
 - Reduce your mental workload
 
 ## Installation
-Note: QALI is not gauranteed to work in Windows.
 
-### From source
-download the [latest release](https://github.com/JettChenT/qali/releases/latest) of your platform, unzip, and move `q` and `qali` binaries to your `/usr/local/bin` folder
-
-### Homebrew
+### Homebrew (for macOS)
 ```shell
 brew tap JettChenT/qali
 brew intall qali
 ```
 
+### From source
+download the [latest release](https://github.com/JettChenT/qali/releases/latest) of your platform, unzip, and move `q` and `qali` binaries to your `bin` folder (usually /usr/local/bin)
+
 ### Cargo
+A [Rust](https://rust-lang.org) installation is required
 ```shell
 cargo install qali
 ```
 
+### Note for windows users: 
+
+To run the QALI on a windows machine without encoding errors, use [windows terminal](https://github.com/microsoft/terminal).
+
+`q.exe` works...
+
+but `qali.exe` somehow gets detected as a [trojan virus](https://www.microsoft.com/en-us/wdsi/threats/malware-encyclopedia-description?Name=Trojan:Win32/Sabsik.FL.B!ml&ThreatID=2147780203) (I wish I know how to make one (>_<)
+ 
+This can be solved by allowing the "virus" in windows defender.
+
+Luckily, `qali.exe` is not required for simple actions such as setting and executing an alias.
+
+## The Commands
 This installs two separate binaries : `q` and `qali`.
 
 The command `q` is meant for actions with the highest usage frequency, such as setting and alias or executing a command.
@@ -44,9 +57,9 @@ The command `qali` is meant as a companion allowing for subcommands and more fun
 
 ## Supported alias types:
 - Command: one liners, eg. `q -s hi "echo hi"`
-- Shell: Shell scripts, eg. `q -s hi hello.sh` (*EXPERIMENTAL*)
-- Python: Python scripts, eg. `q -s hi hello.py` (*EXPERIMENTAL*)
-- URI: open URI in default application, eg. `q -s hi https://beta.sayhello.so` (*EXPERIMENTAL*)
+- Shell: Shell scripts, eg. `q -s hi hello.sh` (*EXPERIMENTAL*) (Works **iff** your shell installation has the name "sh")
+- Python: Python scripts, eg. `q -s hi hello.py` (*EXPERIMENTAL*) (Works **iff** your python command has the name "python")
+- URI: open URI in default application, eg. `q -s hi https://beta.sayhello.so` 
 
 ## Examples:
 
