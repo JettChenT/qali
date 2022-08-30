@@ -22,7 +22,7 @@ brew tap JettChenT/qali
 brew intall qali
 ```
 
-### From source
+### From release
 download the [latest release](https://github.com/JettChenT/qali/releases/latest) of your platform, unzip, and move `q` and `qali` binaries to your `bin` folder (usually /usr/local/bin)
 
 ### Cargo
