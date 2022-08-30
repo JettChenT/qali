@@ -11,16 +11,22 @@ pub struct Cmd {
 impl QaliCommand for Cmd {
     fn execute(&self, args: Option<&String>) -> anyhow::Result<()> {
         println!("$ {} {}", &self.command.blue(), args.unwrap_or(&"".to_string()));
-        let mut prefs = self.command.split_whitespace();
-        let cmd = prefs.next().context("failed to get command")?;
-        let mut shell_cmd = Command::new(cmd);
-        for arg in prefs {
-            shell_cmd.arg(arg);
-        }
-        if let Some(arg) = args {
-            shell_cmd.arg(arg);
-        }
-        shell_cmd.status().context("Failed to execute process.")?;
+        let cmd = match args {
+            Some(args) => format!("{} {}", &self.command, args),
+            None => self.command.clone()
+        };
+        if cfg!(target_os = "windows") {
+            Command::new("cmd")
+                .args(&["/C", cmd.as_str()])
+                .status()
+                .context("Failed to execute process.")
+        } else {
+            Command::new("sh")
+                .arg("-c")
+                .arg(cmd.as_str())
+                .status()
+                .context("Failed to execute process.")
+        }?;
         Ok(())
     }
 

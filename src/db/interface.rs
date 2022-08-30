@@ -46,6 +46,7 @@ pub fn ls() -> Result<()>{
         .with(Modify::new(Columns::single(0))
         .with(Format::new(|s| s.blue().to_string())))
         .to_string();
+    println!("Alias directory: {}\n", get_dir()?.to_string_lossy());
     println!("{}", table);
     Ok(())
 }

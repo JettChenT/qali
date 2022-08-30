@@ -4,7 +4,6 @@
 ![Crates.io](https://img.shields.io/crates/l/qali) 
 ![Crates.io](https://img.shields.io/crates/v/qali)
 
-Note: we're currently in the stage of initial development.
 
 [![asciicast](https://asciinema.org/a/517546.svg)](https://asciinema.org/a/517546)
 
@@ -16,8 +15,18 @@ QALI can...
 - Reduce your mental workload
 
 ## Installation
-Currently, a [Rust](https://www.rust-lang.org) installation is required 
+Note: QALI is not gauranteed to work in Windows.
 
+### From source
+download the [latest release](https://github.com/JettChenT/qali/releases/latest) of your platform, unzip, and move `q` and `qali` binaries to your `/usr/local/bin` folder
+
+### Homebrew
+```shell
+brew tap JettChenT/qali
+brew intall qali
+```
+
+### Cargo
 ```shell
 cargo install qali
 ```
