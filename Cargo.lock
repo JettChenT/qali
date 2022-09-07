@@ -363,11 +363,12 @@ dependencies = [
 
 [[package]]
 name = "qali"
-version = "0.3.6"
+version = "0.3.7"
 dependencies = [
  "anyhow",
  "clap",
  "colored",
+ "console",
  "dialoguer",
  "directories",
  "open",

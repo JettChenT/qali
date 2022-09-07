@@ -7,6 +7,7 @@ use dialoguer::{
 };
 
 use crate::db::*;
+use anyhow::{anyhow, Result};
 
 #[derive(Tabled)]
 struct QEntry{
@@ -54,9 +55,13 @@ pub fn ls() -> Result<()>{
 pub fn select() -> Result<String>{
     let entries = get_entries()?;
     let selected = FuzzySelect::with_theme(&ColorfulTheme::default())
-        .with_prompt("Select an alias")
+        .with_prompt("Select an alias (press esc to exit)")
         .items(&entries)
         .default(0)
-        .interact()?;
-    Ok(entries[selected].alias.clone())
+        .interact_opt()?;
+    if let Some(i) = selected{
+        Ok(entries[i].alias.clone())
+    }else{
+        Err(anyhow!("No alias selected."))
+    }
 }

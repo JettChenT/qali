@@ -22,7 +22,12 @@ impl QaliCommand for Python{
         if !file.exists(){
             return Err(anyhow!("File {} not found", self.filename));
         }
-        let mut shell_cmd = Command::new("python");
+        let prog = if cfg!(target_os = "windows"){
+            "py"
+        } else {
+            "python3"
+        };
+        let mut shell_cmd = Command::new(prog);
         shell_cmd.arg(file);
         if let Some(arg) = args{
             shell_cmd.arg(arg);

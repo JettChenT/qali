@@ -1,6 +1,6 @@
 [package]
 name = "qali"
-version = "0.3.6"
+version = "0.3.7"
 edition = "2021"
 authors = ["contact@jettchen.me"]
 license = "MIT/Apache-2.0"
@@ -21,6 +21,7 @@ anyhow="1.0"
 open = "1"
 regex = "1.6.0"
 dialoguer = {version = "0.10.2", features=["fuzzy-select"]}
+console = "0.15.1"
 tabled = {version = "0.8.0", features=["color"]}
 
 [[bin]]
