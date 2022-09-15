@@ -7,7 +7,9 @@ use std::ffi::OsStr;
 use directories::ProjectDirs;
 use colored::*;
 use anyhow::{Result, Context};
-use dialoguer::{Confirm, theme::ColorfulTheme};
+use dialoguer::{Confirm, theme::ColorfulTheme, Input};
+
+use crate::suggest;
 
 mod tst;
 pub mod interface;
@@ -44,6 +46,7 @@ pub fn save(alias: &String, command: &String) -> Result<()>{
     eprintln!("✅ Aliased {} to {}", &alias.blue(), &command.blue());
     Ok(())
 }
+
 
 pub fn read(alias: &String) -> Result<String>{
     fs::read_to_string(get_path(alias)).

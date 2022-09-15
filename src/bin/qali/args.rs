@@ -30,5 +30,10 @@ pub enum Commands {
         command: String
     },
     /// Select and execute an alias
-    Select
+    Select,
+    /// Set an alias by suggestion
+    Add{
+        #[clap(value_parser)]
+        command: String
+    }
 }

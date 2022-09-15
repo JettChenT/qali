@@ -1,10 +1,12 @@
 use anyhow::Result;
 use dialoguer::{theme::ColorfulTheme, Input};
+use colored::Colorize;
 
 use python::Python;
 use cmd::Cmd;
 use shell::Shell;
 use uri::Uri;
+use crate::suggest;
 
 use crate::db;
 
@@ -38,6 +40,29 @@ pub fn save_alias(alias: &String, command: &String) -> Result<()> {
     let action = parse_command(command)?;
     let store = action.export()?;
     db::save(alias, &store)
+}
+
+pub fn suggest_save_alias(command: &String) -> Result<()>{
+    let alias: String = {
+        let suggestion = suggest::suggest_alias(command);
+        match suggestion{
+            Ok(s) => {
+                println!("{}", "Suggestion found".blue());
+                Input::with_theme(&ColorfulTheme::default())
+                .with_prompt("Enter alias:")
+                .default(s)
+                .interact()?
+            },
+            Err(_) => {
+                Input::with_theme(&ColorfulTheme::default())
+                .with_prompt("Enter alias:")
+                .interact()?
+            }
+        }
+    };
+    let action = parse_command(command)?;
+    let store = action.export()?;
+    db::save(&alias, &store)
 }
 
 pub fn execute_alias(alias: &String, args: Option<&String>) -> Result<()> {

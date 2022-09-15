@@ -22,6 +22,7 @@ fn try_main(args: &Args) -> Result<()>{
         List => db::interface::ls(),
         Remove {alias} => db::remove_alias(alias),
         Set {alias, command} => commands::save_alias(alias, command),
-        Select => commands::select_and_execute_alias()
+        Select => commands::select_and_execute_alias(),
+        Add { command } => commands::suggest_save_alias(command)
     }
 }

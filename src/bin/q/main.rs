@@ -21,7 +21,7 @@ fn try_main(args:&Args) -> Result<()>{
         if args.set{
             match &args.target {
                 Some(t) => commands::save_alias(alias, t),
-                None => Err(anyhow!("Missing target value"))
+                None => commands::suggest_save_alias(alias)
             }
         }else{
             if let Some(t) = &args.target{
