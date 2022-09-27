@@ -106,6 +106,12 @@ jobs:
           tar czf "$staging.tar.gz" -C "$staging" .
           echo "ASSET=$staging.tar.gz" >> $GITHUB_ENV
         fi
+    - name: Calculate SHA-256 checksum (MacOS)
+      shell: bash
+      if: ${{ success() }}
+      if: matrix.os == ''
+      run: |
+          shasum -a 256 "$ASSET"
     - name: Upload release archive
       uses: actions/upload-release-asset@v1.0.2
       if: ${{ success() }}
