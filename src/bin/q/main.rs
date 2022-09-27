@@ -5,6 +5,7 @@ use qali::{*, db::exists};
 use qali::commands::execute_alias;
 use qali::commands;
 use anyhow::{Result, anyhow};
+use colored::Colorize;
 
 pub mod args;
 
@@ -30,7 +31,12 @@ fn try_main(args:&Args) -> Result<()>{
                     return commands::save_alias(alias, t);
                 }
             }
-            execute_alias(alias, args.target.as_ref())
+            if db::exists(alias){
+                execute_alias(alias, args.target.as_ref())
+            }else{
+                eprintln!("Alias {} not found, creating one... (^C to quit)", alias.blue());
+                commands::suggest_save_alias(alias)
+            }
         }
     }else{
         commands::select_and_execute_alias()
