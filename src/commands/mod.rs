@@ -6,6 +6,7 @@ use python::Python;
 use cmd::Cmd;
 use shell::Shell;
 use uri::Uri;
+use crate::db::StorageMode;
 use crate::suggest;
 
 use crate::db;
@@ -36,13 +37,13 @@ pub fn parse_command(command: &String) -> Result<Box<dyn QaliCommand>> {
     }
 }
 
-pub fn save_alias(alias: &String, command: &String) -> Result<()> {
+pub fn save_alias(alias: &String, command: &String, m:&StorageMode) -> Result<()> {
     let action = parse_command(command)?;
     let store = action.export()?;
-    db::save(alias, &store)
+    db::save(alias, &store, m)
 }
 
-pub fn suggest_save_alias(command: &String) -> Result<()>{
+pub fn suggest_save_alias(command: &String, m:&StorageMode) -> Result<()>{
     let alias: String = {
         let suggestion = suggest::suggest_alias(command);
         match suggestion{
@@ -62,11 +63,11 @@ pub fn suggest_save_alias(command: &String) -> Result<()>{
     };
     let action = parse_command(command)?;
     let store = action.export()?;
-    db::save(&alias, &store)
+    db::save(&alias, &store, m)
 }
 
 pub fn execute_alias(alias: &String, args: Option<&String>) -> Result<()> {
-    let command = db::read(alias)?;
+    let command = db::read_all(alias)?;
     let cmd = parse_command(&command)?;
     cmd.execute(args)
 }

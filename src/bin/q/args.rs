@@ -1,4 +1,5 @@
-use clap::Parser;
+use clap::{Parser, arg};
+use crate::db::StorageMode;
 
 /// QALI: Quick Aliaser
 /// q: execute and set commands ergonomically
@@ -12,21 +13,25 @@ use clap::Parser;
 /// `q -s gs "git status"`: alias gs to "git status"
 /// `q gs`: execute gs
 #[derive(Parser, Debug)]
-#[clap(author, version, about, long_about=None)]
+#[command(author, version, about, long_about=None)]
 pub struct Args{
     /// The alias to execute or set
-    #[clap(value_parser)]
+    #[arg(value_parser)]
     pub alias: Option<String>,
 
     /// The target value
-    #[clap(value_parser)]
+    #[arg(value_parser)]
     pub target: Option<String>,
 
     /// Flag set
-    #[clap(short, long, action)]
+    #[arg(short, long, action)]
     pub set: bool,
 
     /// Flag debug
-    #[clap(short, long, action)]
+    #[arg(short, long, action)]
     pub debug: bool,
+
+    #[arg(short='m', long, action, default_value_t=StorageMode::Global)]
+    pub storage_mode: StorageMode
+
 }

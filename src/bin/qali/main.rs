@@ -20,9 +20,9 @@ fn try_main(args: &Args) -> Result<()>{
      
     match &args.command {
         List => db::interface::ls(),
-        Remove {alias} => db::remove_alias(alias),
-        Set {alias, command} => commands::save_alias(alias, command),
+        Remove {alias} => db::remove_alias(alias, &args.storage_mode),
+        Set {alias, command} => commands::save_alias(alias, command, &args.storage_mode),
         Select => commands::select_and_execute_alias(),
-        Add { command } => commands::suggest_save_alias(command)
+        Add { command } => commands::suggest_save_alias(command, &args.storage_mode)
     }
 }

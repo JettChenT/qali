@@ -69,6 +69,11 @@ Example: set `gs` as `git status`
 q -s gs "git status"
 ```
 
+Example: set `cc` to `cargo check` locally
+```shell
+q -s cc "cargo check" -m local
+```
+
 Set `p` as `python` if `p` doesn't exist
 ```shell
 q p python 

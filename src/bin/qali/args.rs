@@ -1,15 +1,20 @@
 use clap::{Parser, Subcommand};
+use crate::db::StorageMode;
 
 #[derive(Parser, Debug)]
-#[clap(author, version, about, long_about = None)]
-#[clap(propagate_version = true)]
+#[command(author, version, about, long_about = None)]
+#[command(propagate_version = true)]
 pub struct Args {
-    #[clap(subcommand)]
+    #[command(subcommand)]
     pub command: Commands,
 
     /// Debug mode
-    #[clap(short, long, action)]
+    #[arg(short, long, action)]
     pub debug: bool,
+
+    /// Storage mode
+    #[arg(short='m', long, action, default_value_t=StorageMode::Global)]
+    pub storage_mode: StorageMode,
 }
 
 #[derive(Subcommand, Debug)]

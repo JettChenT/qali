@@ -15,7 +15,7 @@ pub fn suggest_alias(command: &String) -> Result<String>{
         }
         alias_words[i].push_str(&words[i][0..1]);
         let alias = alias_words.join("");
-        if alias.len()>=words.len() && !db::exists(&alias){
+        if alias.len()>=words.len() && !db::exists_all(&alias){
             return Ok(alias);
         }
         words[i] = &words[i][1..];
