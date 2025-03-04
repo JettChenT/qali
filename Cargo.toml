@@ -14,15 +14,15 @@ categories = ["command-line-utilities"]
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-clap = {version = "4.0.27", features=["derive"]}
-directories = "4.0"
-colored = "2"
-anyhow="1.0"
-open = "1"
-regex = "1.6.0"
-dialoguer = {version = "0.10.2", features=["fuzzy-select"]}
-console = "0.15.1"
-tabled = {version = "0.8.0", features=["color"]}
+clap = { version = "4.5.31", features = ["derive"] }
+directories = "6.0"
+colored = "3"
+anyhow = "1.0"
+open = "5"
+regex = "1.11.1"
+dialoguer = { version = "0.11.0", features = ["fuzzy-select"] }
+console = "0.15.11"
+tabled = { version = "0.18.0" }
 
 [[bin]]
 name = "q"
