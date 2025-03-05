@@ -3,6 +3,7 @@ use args::Args;
 use clap::Parser;
 use qali::commands;
 use qali::db;
+use qali::db::StorageMode;
 use qali::outputils::pnt_err;
 use std::process;
 pub mod args;
@@ -22,11 +23,17 @@ fn try_main(args: &Args) -> Result<()> {
         let _ = term.show_cursor();
     })?;
 
+    let storage_mode = if args.local {
+        StorageMode::Local
+    } else {
+        StorageMode::Global
+    };
+
     match &args.command {
         List => db::interface::ls(),
-        Remove { alias } => db::remove_alias(alias, &args.storage_mode),
-        Set { alias, command } => commands::save_alias(alias, command, &args.storage_mode),
+        Remove { alias } => db::remove_alias(alias, &storage_mode),
+        Set { alias, command } => commands::save_alias(alias, command, &storage_mode),
         Select => commands::select_and_execute_alias(),
-        Add { command } => commands::suggest_save_alias(command, &args.storage_mode),
+        Add { command } => commands::suggest_save_alias(command, &storage_mode),
     }
 }

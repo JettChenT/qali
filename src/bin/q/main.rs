@@ -4,8 +4,8 @@ use clap::Parser;
 use colored::Colorize;
 use qali::commands;
 use qali::commands::execute_alias;
-use qali::db::exists_all;
-use qali::{db::exists, *};
+use qali::db::{self, exists_all, StorageMode};
+use qali::outputils;
 use std::process;
 
 pub mod args;
@@ -23,17 +23,22 @@ fn try_main(args: &Args) -> Result<()> {
         let term = console::Term::stdout();
         let _ = term.show_cursor();
     })?;
+    let storage_mode = if args.local {
+        StorageMode::Local
+    } else {
+        StorageMode::Global
+    };
     if let Some(alias) = &args.alias {
         if args.set {
             match &args.target {
-                Some(t) => commands::save_alias(alias, t, &args.storage_mode),
-                None => commands::suggest_save_alias(alias, &args.storage_mode),
+                Some(t) => commands::save_alias(alias, t, &storage_mode),
+                None => commands::suggest_save_alias(alias, &storage_mode),
             }
         } else {
             if let Some(t) = &args.target {
                 if !exists_all(alias) {
                     eprintln!("Alias {} does not exist, creating one...", alias);
-                    return commands::save_alias(alias, t, &args.storage_mode);
+                    return commands::save_alias(alias, t, &storage_mode);
                 }
             }
             if db::exists_all(alias) {
@@ -43,7 +48,7 @@ fn try_main(args: &Args) -> Result<()> {
                     "Alias {} not found, creating one... (^C to quit)",
                     alias.blue()
                 );
-                commands::suggest_save_alias(alias, &args.storage_mode)
+                commands::suggest_save_alias(alias, &storage_mode)
             }
         }
     } else {

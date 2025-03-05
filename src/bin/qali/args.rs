@@ -1,5 +1,5 @@
-use clap::{Parser, Subcommand};
 use crate::db::StorageMode;
+use clap::{Parser, Subcommand};
 
 #[derive(Parser, Debug)]
 #[command(author, version, about, long_about = None)]
@@ -13,8 +13,12 @@ pub struct Args {
     pub debug: bool,
 
     /// Storage mode
-    #[arg(short='m', long, action, default_value_t=StorageMode::Global)]
-    pub storage_mode: StorageMode,
+    // #[arg(short='m', long, action, default_value_t=StorageMode::Global)]
+    // pub storage_mode: StorageMode,
+    //
+
+    #[arg(short = 'l', long, action)]
+    pub local: bool,
 }
 
 #[derive(Subcommand, Debug)]
@@ -22,23 +26,23 @@ pub enum Commands {
     /// List all existing commands
     List,
     /// Remove an alias
-    Remove{
+    Remove {
         /// The alias
         #[clap(value_parser)]
-        alias: String
+        alias: String,
     },
     /// Set an alias to a command
-    Set{
+    Set {
         #[clap(value_parser)]
         alias: String,
         #[clap(value_parser)]
-        command: String
+        command: String,
     },
     /// Select and execute an alias
     Select,
     /// Set an alias by suggestion
-    Add{
+    Add {
         #[clap(value_parser)]
-        command: String
-    }
+        command: String,
+    },
 }
