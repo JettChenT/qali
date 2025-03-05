@@ -1,7 +1,7 @@
 # QALI (q)
 **Q**uick **Ali**asing
 
-![Crates.io](https://img.shields.io/crates/l/qali) 
+![Crates.io](https://img.shields.io/crates/l/qali)
 ![Crates.io](https://img.shields.io/crates/v/qali)
 
 
@@ -31,14 +31,14 @@ A [Rust](https://rust-lang.org) installation is required
 cargo install qali
 ```
 
-### Note for windows users: 
+### Note for windows users:
 
 To run the QALI on a windows machine without encoding errors, use [windows terminal](https://github.com/microsoft/terminal).
 
 `q.exe` works...
 
 but `qali.exe` somehow gets detected as a [trojan virus](https://www.microsoft.com/en-us/wdsi/threats/malware-encyclopedia-description?Name=Trojan:Win32/Sabsik.FL.B!ml&ThreatID=2147780203) (I wish I know how to make one (>_<)
- 
+
 This can be solved by allowing the "virus" in windows defender.
 
 Luckily, `qali.exe` is not required for simple actions such as setting and executing an alias.
@@ -59,29 +59,34 @@ The command `qali` is meant as a companion allowing for subcommands and more fun
 - Command: one liners, eg. `q -s hi "echo hi"`
 - Shell: Shell scripts, eg. `q -s hi hello.sh` (*EXPERIMENTAL*) (Works **iff** your shell installation has the name "sh")
 - Python: Python scripts, eg. `q -s hi hello.py` (*EXPERIMENTAL*) (Works **iff** your python command has the name "python")
-- URI: open URI in default application, eg. `q -s hi https://beta.sayhello.so` 
+- URI: open URI in default application, eg. `q -s hi https://beta.sayhello.so`
 
 ## Examples:
 
 ### Set an alias
-Example: set `gs` as `git status` 
+Example: set `gs` as `git status`
 ```shell
 q -s gs "git status"
 ```
 
 Example: set `cc` to `cargo check` locally
 ```shell
-q -s cc "cargo check" -m local
+q -sl cc "cargo check"
 ```
 
 Set `p` as `python` if `p` doesn't exist
 ```shell
-q p python 
+q p python
 ```
 
 Set `hi` to `./hi.py` with `qali`
 ```shell
 qali set hi ./hi.py
+```
+
+Set local alias `hi` to `./hi.py` with `qali`
+```shell
+qali -l set hi ./hi.py
 ```
 
 ### Execute aliases interactively (fuzzy select)
